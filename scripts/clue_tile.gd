@@ -41,8 +41,8 @@ var solved: String:
 		arrow_node = $Arrow
 		match solved:
 			"incomplete":
-				arrow_node.modulate = Color(0.66, 0.66, 0.66, 1)
+				arrow_node.modulate = Color(1, 1, 1, 1)
 			"correct":
-				arrow_node.modulate = Color(0, 1, 0, 1)
+				arrow_node.modulate = Color(0, 0.5, 1, 1)
 			"wrong":
 				arrow_node.modulate = Color(1, 0, 0, 1)
