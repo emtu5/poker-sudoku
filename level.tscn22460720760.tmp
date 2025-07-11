@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjqageed6v4fi"]
+
+[ext_resource type="Script" uid="uid://bx1qlqc0aug4c" path="res://scripts/level.gd" id="1_u52ul"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_u52ul")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 932.0
+offset_top = 17.0
+offset_right = 972.0
+offset_bottom = 40.0
+text = "Put the cards such that
+the across and down clues
+are followed.
+SF - straight flush
+4OAK - four of a kind
+FH - full house
+F - flush
+S - straight
+3OAK - three of a kind
+2P - two pair
+P - pair
+HC - high card"

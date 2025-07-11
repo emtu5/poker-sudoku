@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://gwegn2cpgt8j"]
+
+[ext_resource type="Script" uid="uid://fahpldhwefo1" path="res://scripts/card.gd" id="1_q5obu"]
+[ext_resource type="Texture2D" uid="uid://bstwgg1l3mg0s" path="res://assets/card.png" id="2_e484p"]
+[ext_resource type="Texture2D" uid="uid://dxs4lkohn87be" path="res://assets/spade.png" id="3_fpac0"]
+
+[sub_resource type="SystemFont" id="SystemFont_1i5pp"]
+font_names = PackedStringArray("Consolas")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q5obu"]
+size = Vector2(50, 50)
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_q5obu")
+
+[node name="Back" type="Sprite2D" parent="."]
+texture = ExtResource("2_e484p")
+
+[node name="Value" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -22.0
+offset_right = -6.0
+offset_bottom = 4.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_1i5pp")
+theme_override_font_sizes/font_size = 25
+text = "K"
+
+[node name="Suit" type="Sprite2D" parent="."]
+position = Vector2(10, 10)
+texture = ExtResource("3_fpac0")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_q5obu")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
