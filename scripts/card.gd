@@ -35,12 +35,8 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 		if card_held:
 			clicked_on.emit(self)
 		else:
+			await get_tree().create_timer(0.001).timeout
 			released.emit()
-			
-		#var parameters = PhysicsPointQueryParameters2D.new()
-		#parameters.position = event.position
-		#parameters.collide_with_areas = true
-		#var objects_clicked = get_world_2d().direct_space_state.intersect_point(parameters)
 
 func _process(delta: float) -> void:
 	if card_held:

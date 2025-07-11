@@ -14,7 +14,7 @@ const HAND_LIST = [
 	"straight_flush"
 ]
 
-func card_counts(card_list: Array) -> Dictionary:
+static func card_counts(card_list: Array) -> Dictionary:
 	var counts: Dictionary = {
 		"value": {},
 		"suit": {}
@@ -22,13 +22,13 @@ func card_counts(card_list: Array) -> Dictionary:
 	for v in VALUES:
 		counts.value[v] = 0
 	for s in SUITS:
-		counts.suits[s] = 0
+		counts.suit[s] = 0
 	for card in card_list:
 		counts.value[card.value] += 1
 		counts.suit[card.suit] += 1
 	return counts
 
-func hand_calculation(counts: Dictionary) -> String:
+static func hand_calculation(counts: Dictionary) -> String:
 	var flush: bool = false
 	var straight: bool = false
 	
@@ -43,7 +43,8 @@ func hand_calculation(counts: Dictionary) -> String:
 	var compressed: Array = []
 	compressed.append(counts.value["2"])
 	for v in VALUES:
-		if counts.value[v] == compressed[-1]:
+		#print(v)
+		if counts.value[v] != compressed[-1]:
 			compressed.append(counts.value[v])
 	straight = compressed in [[0, 1], [0, 1, 0], [1, 0]]
 	if compressed == [1, 0, 1] and counts.value["K"] == 0:

@@ -29,8 +29,20 @@ var direction: String:
 			"down":
 				arrow_node.rotation_degrees = 0
 			"right":
-				arrow_node.rotation_degrees = 90
+				arrow_node.rotation_degrees = -90
 			"up":
-				arrow_node.rotation_degrees = 180
+				arrow_node.rotation_degrees = -180
 			"left":
-				arrow_node.rotation_degrees = 270
+				arrow_node.rotation_degrees = -270
+
+var solved: String:
+	set(solve):
+		solved = solve
+		arrow_node = $Arrow
+		match solved:
+			"incomplete":
+				arrow_node.modulate = Color(0.66, 0.66, 0.66, 1)
+			"correct":
+				arrow_node.modulate = Color(0, 1, 0, 1)
+			"wrong":
+				arrow_node.modulate = Color(1, 0, 0, 1)

@@ -11,7 +11,6 @@ script = ExtResource("1_lres8")
 texture = ExtResource("2_5xawa")
 
 [node name="Arrow" type="Sprite2D" parent="."]
-modulate = Color(0.662745, 0.662745, 0.662745, 1)
 texture = ExtResource("3_sr7cy")
 
 [node name="Hand" type="Label" parent="."]
