@@ -5,26 +5,30 @@ const CLUE: PackedScene = preload("res://clue_tile.tscn")
 const TILE: PackedScene = preload("res://card_tile.tscn")
 const HAND_LOGIC = preload("res://scripts/hand_logic.gd")
 var card_held: Node
-var all_cards: Array
-var all_tiles: Array
-var layout = [".vvvvv", ">#####", ">#####", ">#####", ">#####", ">#####",]
+var layout: Array
+var all_hands: Array
 var width = 6
 var height = 6
-var board = []
+var board: Array = []
 var board_offset = Vector2(100, 100)
+var card_offset = Vector2(380, 450)
 
 func _ready() -> void:
+	load_level()
 	for i in height:
 		board.append([])
 		for j in width:
 			board[i].append(null)
+	var current_clue = 0
 	for i in height:
 		for j in width:
 			match layout[i][j]:
 				"v", ">", "^", "<":
 					var clue = CLUE.instantiate()
 					clue.position = board_offset + Vector2(50 * j, 50 * i)
-					clue.hand_type = HAND_LOGIC.HAND_LIST.pick_random()
+					#clue.hand_type = HAND_LOGIC.HAND_LIST.pick_random()
+					clue.hand_type = all_hands[current_clue]
+					current_clue += 1
 					var directions = {
 						"v": "down",
 						">": "right",
@@ -39,48 +43,48 @@ func _ready() -> void:
 					tile.position = board_offset + Vector2(50 * j, 50 * i)
 					tile.connect("request_card", give_card_to_tile)
 					tile.connect("released_on", move_card_to_the_bottom)
-					all_tiles.append(tile)
 					board[i][j] = tile
 					add_child(tile)
-	for s in HAND_LOGIC.SUITS:
-		for v in HAND_LOGIC.VALUES:	
+	for i in len(HAND_LOGIC.SUITS):
+		for j in len(HAND_LOGIC.VALUES):	
 			var card = CARD.instantiate()
-			card.suit = s
-			card.value = v
-			card.position = Vector2(randi_range(100, 1100), randi_range(500, 600))
+			card.suit = HAND_LOGIC.SUITS[i]
+			card.value = HAND_LOGIC.VALUES[j]
+			card.position = card_offset + Vector2(60 * j, 55 * i)
 			card.connect("clicked_on", move_card_to_the_top)
 			card.connect("released", release_card)
-			all_cards.append(card)
 			add_child(card)
+	#check_clues()
 
 func _process(delta: float) -> void:
 	check_clues()
-	#print(card_held)
-	if Input.is_action_just_pressed("ui_click"):
-		print_board()
 
 func move_card_to_the_top(card: Node) -> void:
 	if card_held == null:
 		card_held = card
 		move_child(card, -1)
 
+func move_card_to_the_bottom(card: Node) -> void:
+	move_child(card, 1)
+	
 func release_card() -> void:
 	card_held = null
-	
-func move_card_to_the_bottom(card: Node) -> void:
-	move_child(card, 0)
 	
 func give_card_to_tile(tile: Node) -> void:
 	tile.card_held = card_held
 	card_held = null
 
 func check_clues() -> void:
+	var finished = true
 	for i in height:
 		for j in width:
 			if layout[i][j] in ["v", ">", "^", "<"]:
-				check_clue(i, j)
+				if not check_clue(i, j):
+					finished = false
+	var complete_node = $Complete
+	complete_node.visible = finished
 
-func check_clue(i: int, j: int):
+func check_clue(i: int, j: int) -> bool:
 	var directions = {
 		"v": Vector2(1, 0),
 		">": Vector2(0, 1),
@@ -95,7 +99,7 @@ func check_clue(i: int, j: int):
 		and layout[current.x][current.y] == "#":
 		if not board[current.x][current.y].card_held:
 			board[i][j].solved = "incomplete"
-			return
+			return false
 		card_list.append(board[current.x][current.y].card_held)
 		current += directions[layout[i][j]]
 	var counts = HAND_LOGIC.card_counts(card_list)
@@ -104,8 +108,9 @@ func check_clue(i: int, j: int):
 		board[i][j].solved = "correct"
 	else:
 		board[i][j].solved = "wrong"
-
-func print_board():
+	return final_hand == board[i][j].hand_type
+	
+func print_board() -> void:
 	for i in height:
 		for j in width:
 			if layout[i][j] == "#":
@@ -114,3 +119,18 @@ func print_board():
 				else:
 					print("X-X")
 		print()
+
+func load_level() -> void:
+	var level_file = FileAccess.open("res://board.txt", FileAccess.READ)
+	var level_data = level_file.get_as_text().split("\n")
+	var current_line = 0
+	while level_data[current_line]:
+		layout.append(level_data[current_line])
+		current_line += 1
+	width = len(layout[0])
+	height = current_line
+	#print(width, height)
+	current_line += 1
+	while current_line < len(level_data):
+		all_hands.append(level_data[current_line])
+		current_line += 1

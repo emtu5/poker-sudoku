@@ -1,24 +1,60 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjqageed6v4fi"]
+[gd_scene load_steps=7 format=3 uid="uid://bjqageed6v4fi"]
 
 [ext_resource type="Script" uid="uid://bx1qlqc0aug4c" path="res://scripts/level.gd" id="1_u52ul"]
+[ext_resource type="Texture2D" uid="uid://c10tj0di0mdxn" path="res://assets/felt.png" id="2_vonw3"]
+
+[sub_resource type="SystemFont" id="SystemFont_u52ul"]
+font_names = PackedStringArray("Consolas")
+
+[sub_resource type="FontVariation" id="FontVariation_vonw3"]
+base_font = SubResource("SystemFont_u52ul")
+variation_embolden = 0.66
+
+[sub_resource type="SystemFont" id="SystemFont_vonw3"]
+font_names = PackedStringArray("Consolas")
+
+[sub_resource type="FontVariation" id="FontVariation_oi3di"]
+base_font = SubResource("SystemFont_vonw3")
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_u52ul")
 
-[node name="Label" type="Label" parent="."]
-offset_left = 932.0
-offset_top = 17.0
-offset_right = 972.0
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
 offset_bottom = 40.0
-text = "Put the cards such that
-the across and down clues
-are followed.
-SF - straight flush
+texture = ExtResource("2_vonw3")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 384.0
+offset_right = 353.0
+offset_bottom = 601.0
+theme_override_fonts/font = SubResource("FontVariation_vonw3")
+theme_override_font_sizes/font_size = 14
+text = "Put the cards such that the across 
+and down clues are followed.
+SF   - straight flush  
 4OAK - four of a kind
-FH - full house
-F - flush
-S - straight
+FH   - full house      
+F    - flush
+S    - straight        
 3OAK - three of a kind
-2P - two pair
-P - pair
-HC - high card"
+2P   - two pair        
+P    - pair
+HC   - high card"
+
+[node name="Complete" type="Label" parent="."]
+visible = false
+offset_left = 419.0
+offset_top = 26.0
+offset_right = 736.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0.635294, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 9
+theme_override_fonts/font = SubResource("FontVariation_oi3di")
+theme_override_font_sizes/font_size = 64
+text = "Complete!"
